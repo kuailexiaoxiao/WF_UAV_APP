@@ -45,8 +45,8 @@ import android.widget.Toast;
 public class Video extends Activity implements OnClickListener {
 	public static String CameraIp_const; // 视频流地址
 	public static String CtrlIP_const; // 控制地址
-	public static String EngineType_const;//语音引擎值
-	public String mEngineType;//语音引擎
+	public static String EngineType_const;// 语音引擎值
+	public String mEngineType;// 语音引擎
 	public static String CameraIp;
 	public static String CtrlIP;
 	public static int CtrlPort = 0;
@@ -79,7 +79,6 @@ public class Video extends Activity implements OnClickListener {
 	// public String mEngineType = SpeechConstant.TYPE_CLOUD;
 	// // 语记安装助手类
 	ApkInstaller mInstaller;
-
 	private Socket socket;// 初始化了一个socket流
 	OutputStream socketWriter;// 初始化一个IO输出流
 	MySurfaceView sfv;
@@ -87,40 +86,18 @@ public class Video extends Activity implements OnClickListener {
 	public boolean temp = false;
 	int ret = 0;// 调用函数返回值
 
-	public void getSettingValue() {
-		 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); 
-		 CtrlIP_const   = settings.getString(Constant.PREF_CONTROLIP_URL, 
-				               Constant.DEFAULT_CONTROLIP_Value);//加载控制地址
-		 CameraIp_const = settings.getString(Constant.PREF_CAMERAIP_URL, 
-				               Constant.DEFAULT_CONTROLIP_Value);//加载视频流地址
-		  EngineType_const  = settings.getString(Constant.PREF_SPEECH_SET,
-				               Constant.DEFAULT_SPEECH_Value);//加载语音引擎
-    	  switch (EngineType_const) {
-				case "Cloud":
-					mEngineType = SpeechConstant.TYPE_CLOUD;
-					break;
-				case "Local":
-					mEngineType = SpeechConstant.TYPE_LOCAL;
-				case "Mix":
-					mEngineType = SpeechConstant.TYPE_MIX;
-				default:
-					break;
-			}
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置窗体全屏
-		getSettingValue();
+		getSettingValue();// 初始化设置参数
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new // 严苛模式
 			StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
-
 		setContentView(R.layout.video);
 		InitSpeech(); // 初始化语音，加载AppId
 		InitLayout(); // 按键的初始化
@@ -142,6 +119,24 @@ public class Video extends Activity implements OnClickListener {
 		CameraIp = CameraIp_const;
 		MySurfaceView.GetCameraIP(CameraIp);// 把视频流地址传递给SurfaceView
 		InitSocket();
+	}
+
+	public void getSettingValue() {// 初始化设置参数
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		CtrlIP_const = settings.getString(Constant.PREF_CONTROLIP_URL, Constant.DEFAULT_CONTROLIP_Value);// 加载控制地址
+		CameraIp_const = settings.getString(Constant.PREF_CAMERAIP_URL, Constant.DEFAULT_CONTROLIP_Value);// 加载视频流地址
+		EngineType_const = settings.getString(Constant.PREF_SPEECH_SET, Constant.DEFAULT_SPEECH_Value);// 加载语音引擎
+		switch (EngineType_const) {
+		case "Cloud":
+			mEngineType = SpeechConstant.TYPE_CLOUD;
+			break;
+		case "Local":
+			mEngineType = SpeechConstant.TYPE_LOCAL;
+		case "Mix":
+			mEngineType = SpeechConstant.TYPE_MIX;
+		default:
+			break;
+		}
 	}
 
 	private void InitSocket() {
@@ -220,8 +215,9 @@ public class Video extends Activity implements OnClickListener {
 			startSpeech();
 			break;
 		case R.id.picture:
-			showTip(CameraIp_const);
+			showTip("查看已拍摄的照片");
 			Intent intent = new Intent(Video.this, photograph.class);
+			startActivity(intent);
 			break;
 		case R.id.btnForward:
 			showTip("向前飞");
@@ -267,9 +263,9 @@ public class Video extends Activity implements OnClickListener {
 	private void mEngineType_Choice() {
 
 		if ((mEngineType == SpeechConstant.TYPE_MIX) || (mEngineType == SpeechConstant.TYPE_LOCAL)) { /**
-																									 * 选择本地听写
-																									 * 判断是否安装语记,未安装则跳转到提示安装页面
-																									 */
+																										 * 选择本地听写
+																										 * 判断是否安装语记,未安装则跳转到提示安装页面
+																										 */
 			if (!SpeechUtility.getUtility().checkServiceInstalled()) {
 				mInstaller.install();
 			} else {

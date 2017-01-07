@@ -49,7 +49,8 @@ public class UAV_Setting extends PreferenceActivity implements OnSharedPreferenc
 				.setSummary(mSharedPreferences.
 						getString(Constant.PREF_CAMERAIP_URL, Constant.DEFAULT_CAMERAIP_Value));
 
-		mListPreference.setSummary(mSharedPreferences.getString(Constant.PREF_SPEECH_SET, Constant.DEFAULT_SPEECH_Value));
+		mListPreference.setSummary(mSharedPreferences.
+				         getString(Constant.PREF_SPEECH_SET, Constant.DEFAULT_SPEECH_Value));
 
 		mSharedPreferences.registerOnSharedPreferenceChangeListener(this);// зЂВс
 

@@ -57,7 +57,7 @@
         </activity>
         <activity android:name=".UAV_Setting" >
         </activity>
-        <activity android:name=".pictureshow" 
+        <activity android:name=".photograph" 
 		    android:screenOrientation="landscape"
 		    android:label="拍摄的照片"
 		    android:theme="@android:style/Theme.Dialog" /> 
