@@ -95,17 +95,17 @@ public class Video extends Activity implements OnClickListener {
 				               Constant.DEFAULT_CONTROLIP_Value);//加载视频流地址
 		  EngineType_const  = settings.getString(Constant.PREF_SPEECH_SET,
 				               Constant.DEFAULT_SPEECH_Value);//加载语音引擎
-//    	switch (EngineType_const) {
-//			case "Cloud":
-//				mEngineType = SpeechConstant.TYPE_CLOUD;
-//				break;
-//			case "Local":
-//				mEngineType = SpeechConstant.TYPE_LOCAL;
-//			case "Mix":
-//				mEngineType = SpeechConstant.TYPE_MIX;
-//			default:
-//				break;
-//			}
+    	  switch (EngineType_const) {
+				case "Cloud":
+					mEngineType = SpeechConstant.TYPE_CLOUD;
+					break;
+				case "Local":
+					mEngineType = SpeechConstant.TYPE_LOCAL;
+				case "Mix":
+					mEngineType = SpeechConstant.TYPE_MIX;
+				default:
+					break;
+			}
 	}
 
 	@Override
